@@ -16,7 +16,7 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 import FloatingLabelInputField from '../component/FloatingInput';
 import { useDispatch, useSelector } from 'react-redux';
 import Divder from '../component/Divider';
-import { pick, keepLocalCopy } from '@react-native-documents/picker';
+import { pick, keepLocalCopy } from '@react-native-documents/picker'
 import RNFetchBlob from 'rn-fetch-blob';
 import Scanner from './Scanner';
 import { ScannerService } from '../services/scannerService';
@@ -137,7 +137,6 @@ const DocumentsForm = props => {
 const pickDocument = async (fieldName) => {
   try {
     const [result] = await pick();
-
     if (!result) return;
 
     const realPath = await keepLocalCopy(result.uri);

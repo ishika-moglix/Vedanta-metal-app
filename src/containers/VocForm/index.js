@@ -19,7 +19,7 @@ import CustomeIcon from '../../component/CustomeIcon';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useSelector, useDispatch } from 'react-redux';
 import FloatingLabelInputField from '../../component/FloatingInput';
-import { pick, keepLocalCopy } from '@react-native-documents/picker';
+import { pick, keepLocalCopy } from '@react-native-documents/picker'
 import Select from '../../component/Select';
 // import { stat } from 'react-native-fs';
 import { setBankDetails } from '../../redux/feature/BankDetailsSlice';
@@ -27,6 +27,7 @@ import { convertDate, convertDateToTimestamp, convertedDate, convertedDated, sho
 import NextButton from '../../component/Button'
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 import RNFetchBlob from 'rn-fetch-blob';
+import { all } from 'redux-saga/effects';
 import axios from 'axios';
 import CustomLoader from '../../component/customLoader';
 import { alphaNumericRegex } from '../../constants';
@@ -345,6 +346,93 @@ const VocFormScreen = props => {
 
     const allowedExtensions = /\.(doc|docx|odt|pdf|tex|txt|xlsx|jpg|png|jpeg|csv)$/i;
 
+const openPicker = async (type) => {
+  try {
+    const response = await pick({ allowMultiSelection: true });
+    if (!response || response.length === 0) return;
+
+    console.log("response of voc file", response);
+
+    let currentDocs =
+      type === 'sectionOne' ? uploadedFiles :
+        type === 'sectionTwo' ? ctsDocuments :
+          type === 'photographs' ? qcirDocuments :
+            type === 'collected/photographs' ? fcirDocuments :
+              type === 'uploadedFilesCustomer' ? uploadedFilesCustomer :
+                type === 'closureDocuments' ? closureDocuments :
+                  [];
+
+    const filesWithLocalPath = await Promise.all(
+      response.map(async (file) => ({
+        ...file,
+        localPath: await keepLocalCopy(file.uri),
+      }))
+    );
+    for (let file of filesWithLocalPath) {
+      const isDuplicate = currentDocs.some(doc => doc.name === file.name);
+      if (isDuplicate) {
+        showMessage('error', `File ${file.name} already exists.`);
+        return;
+      }
+      if (file.name.includes('+')) {
+        showMessage('error', `Remove '+' symbol from file name: ${file.name}`);
+        return;
+      }
+      if (!allowedExtensions.exec(file.name)) {
+        showMessage('error', `Invalid file type: ${file.name}`);
+        return;
+      }
+      const fileSizeMB = (file.size || 0) / 1024 / 1024;
+      console.log("fileSizeMB", fileSizeMB);
+      if (fileSizeMB > 10) {
+        showMessage('error', `File "${file.name}" exceeds 10MB limit.`);
+        return;
+      }
+    }
+
+    const newFilesTotalSize = filesWithLocalPath.reduce(
+      (sum, file) => sum + (file.size || 0),
+      0
+    );
+    const existingFilesTotalSize = currentDocs.reduce(
+      (sum, file) => sum + (file.size || 0),
+      0
+    );
+    const combinedSize = newFilesTotalSize + existingFilesTotalSize;
+
+    const MAX_TOTAL_SIZE = 10 * 1024 * 1024; 
+    if (combinedSize > MAX_TOTAL_SIZE) {
+      showMessage('error', 'Total file size should not exceed 10MB');
+      return;
+    }
+
+    const updatedDocs = [
+      ...currentDocs,
+      ...filesWithLocalPath.map((file) => ({
+        ...file,
+        id: Date.now() + Math.random(),
+      })),
+    ];
+
+    if (type === 'sectionOne') {
+      setUploadedFiles(updatedDocs);
+    } else if (type === 'sectionTwo') {
+      setCtsDocuments(updatedDocs);
+    } else if (type === 'photographs') {
+      setQcirDocuments(updatedDocs);
+    } else if (type === 'collected/photographs') {
+      setFcirDocuments(updatedDocs);
+    } else if (type === 'uploadedFilesCustomer') {
+      setUploadedFilesCustomer(updatedDocs);
+    } else if (type === 'closureDocuments') {
+      setClosureDocuments(updatedDocs);
+    }
+  } catch (err) {
+    showMessage('error', 'File selection failed');
+    console.error('Error while picking documents:', err);
+  }
+};
+
     // const openPicker = async (type) => {
     //     try {
     //         const isfirFilesChanged = true;
@@ -418,95 +506,6 @@ const VocFormScreen = props => {
     //         }
     //     }
     // }
-
-const openPicker = async (type) => {
-  try {
-    const response = await pick({ allowMultiSelection: true });
-    if (!response || response.length === 0) return;
-
-    console.log("response of voc file", response);
-
-    let currentDocs =
-      type === 'sectionOne' ? uploadedFiles :
-        type === 'sectionTwo' ? ctsDocuments :
-          type === 'photographs' ? qcirDocuments :
-            type === 'collected/photographs' ? fcirDocuments :
-              type === 'uploadedFilesCustomer' ? uploadedFilesCustomer :
-                type === 'closureDocuments' ? closureDocuments :
-                  [];
-  
-    const filesWithLocalPath = await Promise.all(
-      response.map(async (file) => ({
-        ...file,
-        localPath: await keepLocalCopy(file.uri),
-      }))
-    );
-
-    for (let file of filesWithLocalPath) {
-      const isDuplicate = currentDocs.some(doc => doc.name === file.name);
-      if (isDuplicate) {
-        showMessage('error', `File ${file.name} already exists.`);
-        return;
-      }
-      if (file.name.includes('+')) {
-        showMessage('error', `Remove '+' symbol from file name: ${file.name}`);
-        return;
-      }
-      if (!allowedExtensions.exec(file.name)) {
-        showMessage('error', `Invalid file type: ${file.name}`);
-        return;
-      }
-      const fileSizeMB = (file.size || 0) / 1024 / 1024;
-      console.log("fileSizeMB", fileSizeMB);
-      if (fileSizeMB > 10) {
-        showMessage('error', `File "${file.name}" exceeds 10MB limit.`);
-        return;
-      }
-    }
-
-    const newFilesTotalSize = filesWithLocalPath.reduce(
-      (sum, file) => sum + (file.size || 0),
-      0
-    );
-    const existingFilesTotalSize = currentDocs.reduce(
-      (sum, file) => sum + (file.size || 0),
-      0
-    );
-    const combinedSize = newFilesTotalSize + existingFilesTotalSize;
-
-    const MAX_TOTAL_SIZE = 10 * 1024 * 1024; 
-    if (combinedSize > MAX_TOTAL_SIZE) {
-      showMessage('error', 'Total file size should not exceed 10MB');
-      return;
-    }
-
-    const updatedDocs = [
-      ...currentDocs,
-      ...filesWithLocalPath.map((file) => ({
-        ...file,
-        id: Date.now() + Math.random(),
-      })),
-    ];
-
-    if (type === 'sectionOne') {
-      setUploadedFiles(updatedDocs);
-    } else if (type === 'sectionTwo') {
-      setCtsDocuments(updatedDocs);
-    } else if (type === 'photographs') {
-      setQcirDocuments(updatedDocs);
-    } else if (type === 'collected/photographs') {
-      setFcirDocuments(updatedDocs);
-    } else if (type === 'uploadedFilesCustomer') {
-      setUploadedFilesCustomer(updatedDocs);
-    } else if (type === 'closureDocuments') {
-      setClosureDocuments(updatedDocs);
-    }
-  } catch (err) {
-    showMessage('error', 'File selection failed');
-    console.error('Error while picking documents:', err);
-  }
-};
-
     const ProductChange = async (value) => {
         setProducts(value);
         setCategory('');

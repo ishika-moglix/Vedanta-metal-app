@@ -1,15 +1,24 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.moglix.vedanta">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
+     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
 
     <application
       android:name=".MainApplication"
       android:label="@string/app_name"
       android:icon="@mipmap/ic_launcher"
       android:roundIcon="@mipmap/ic_launcher_round"
+      android:requestLegacyExternalStorage="true"
+      android:supportsRtl="true"
       android:allowBackup="false"
-      android:theme="@style/AppTheme"
-      android:supportsRtl="true">
+      android:theme="@style/AppTheme">
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"
@@ -20,6 +29,16 @@
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+         <intent-filter>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+             <data
+                android:pathPrefix="/android/callback"
+                android:scheme="com.moglix.vedanta"
+                android:host="com.moglix.vedanta"
+              />
         </intent-filter>
       </activity>
     </application>

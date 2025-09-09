@@ -1,4 +1,4 @@
-package com.vedanta
+package com.moglix.vedanta
 
 import android.app.Application
 import com.facebook.react.PackageList

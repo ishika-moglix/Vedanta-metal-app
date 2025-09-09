@@ -172,8 +172,6 @@ export default class App extends React.Component {
       <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }} edges={['top', 'left', 'right']}>
         <Provider store={store}>
             <Routes />
-          
-
         </Provider>
       </SafeAreaView>
         </SafeAreaProvider>

@@ -1235,7 +1235,7 @@ const LoginScreen = props => {
                       size={22}
                       color={'#0466A9'}
                       onPress={() => setIsVisible(true)}
-                      style={{ position: 'absolute', right: 15,  }}
+                      style={{ position: 'absolute', right: 15, top: 8 }}
                     />
                   </TouchableOpacity>
                   <Modal

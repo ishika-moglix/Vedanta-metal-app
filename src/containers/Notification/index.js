@@ -24,7 +24,6 @@ import HeaderTab from '../../component/HeaderTabs';
 import Toast from 'react-native-toast-message';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 import style from './style';
-// import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view';
 import axios from 'axios';
 import { formatTimeStatus } from '../../utils/BiometricAuth';

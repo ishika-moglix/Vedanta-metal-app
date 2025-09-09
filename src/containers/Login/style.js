@@ -55,10 +55,10 @@ export default StyleSheet.create({
   },
   result: {
     fontSize: Dimension.font14,
+    textAlign: 'center',
     fontWeight: '800',
     color: '#0064A8',
     width: '80%',
-    textAlign: 'center',
     lineHeight: Dimension.font20,
     fontFamily: Dimension.CustomSemiBoldFont,
   },
@@ -157,13 +157,11 @@ export default StyleSheet.create({
   // padding: 1,
   // marginBottom: Dimension.margin20,
   // },
-
   pickerWrapBtn: {
     height: Dimension.height40,
-    paddingHorizontal: Dimension.padding8,
-    flexDirection: 'row',          
-    alignItems: 'center',          
-    justifyContent: 'space-between', 
+    paddingLeft: Dimension.padding8,
+    alignItems: 'flex-start',
+    paddingVertical: Dimension.padding8,
     position: 'relative',
   },
   PickerTxt: {

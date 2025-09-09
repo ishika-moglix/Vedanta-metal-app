@@ -2,7 +2,9 @@ import CONSTANTS from '../services/constant';
 import { PermissionsAndroid, Alert, Platform } from 'react-native';
 // import RNFS, { stat } from 'react-native-fs';
 import Toast from 'react-native-toast-message';
+// import RNFetchBlob from 'rn-fetch-blob';
 import RNFetchBlob from 'react-native-blob-util';
+
 import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 
 export const generatePDFUrl = (
@@ -202,7 +204,6 @@ const mimeMap = {
   txt: 'text/plain',
   csv: 'text/csv',
 };
-
 // export const handleDownload = async (url, type) => {
 //   try {
 //     const granted = await PermissionsAndroid.request(
@@ -293,7 +294,17 @@ const requestLocationPermission = async () => {
   return true;
 };
 
-
+// const mimeMap = {
+//   pdf: 'application/pdf',
+//   jpg: 'image/jpeg',
+//   jpeg: 'image/jpeg',
+//   png: 'image/png',
+//   doc: 'application/msword',
+//   docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+//   xls: 'application/vnd.ms-excel',
+//   xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+//   txt: 'text/plain',
+// };
 
 export const handleDownloads = async (url, type) => {
   try {
@@ -326,6 +337,7 @@ export const handleDownloads = async (url, type) => {
     console.log('Download completed:', res.path());
 
     if (Platform.OS === 'ios') {
+      // iOS me file ko Files app se khola/preview kiya ja sakta hai
       RNFetchBlob.ios.previewDocument(res.path());
       Toast.show({
         type: 'success',

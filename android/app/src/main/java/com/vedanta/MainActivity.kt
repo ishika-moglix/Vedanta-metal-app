@@ -1,4 +1,4 @@
-package com.vedanta
+package com.moglix.vedanta
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

@@ -10,7 +10,6 @@ import {
   Platform,
 } from 'react-native';
 // import { RNCamera } from 'react-native-camera';
-import { CameraKitCamera, CameraKitCameraScreen } from 'react-native-camera-kit';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Scanner = props => {
@@ -55,22 +54,6 @@ const Scanner = props => {
             <Text style={styles.discardTxt}>Discard</Text>
           </TouchableOpacity>
         </View>
-        <CameraKitCameraScreen
-          scanBarcode={true} 
-          onReadCode={(event) => {
-            console.log(event.nativeEvent.codeStringValue);
-            props.onSuccess({ data: event.nativeEvent.codeStringValue });
-          }}
-          showFrame={true}
-          laserColor="red"
-          frameColor="white"
-          hideControls={true}
-          style={{
-            flex: 1,
-            width: '100%',
-            marginTop: Platform.OS === 'ios' ? 80 : 40, 
-          }}
-        />
         {/* <RNCamera
           style={{
             flex: 1,

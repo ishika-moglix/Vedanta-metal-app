@@ -37,6 +37,7 @@ import Select from '../../component/Select';
 import { updateCustomerUser } from '../../services/customerRegistration';
 import Toast from 'react-native-toast-message';
 import { setUser } from '../../redux/feature/userSlice';
+import { flush } from 'redux-saga/effects';
 import AesUtil from '../../generic/index';
 import CryptoJS from 'crypto-js';
 const usersScreen = props => {

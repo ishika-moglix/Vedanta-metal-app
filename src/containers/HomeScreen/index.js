@@ -23,7 +23,7 @@ import { filterTextRegex, TOKEN_RESP } from '../../constants';
 import CONSTANTS from '../../services/constant';
 import styles from './style';
 import Header from '../../component/Header';
-import { pick, keepLocalCopy } from '@react-native-documents/picker';
+import { pick, keepLocalCopy } from '@react-native-documents/picker'
 import Colors from '../../Theme/Colors';
 import Select from '../../component/Select';
 import { useDispatch, useSelector } from 'react-redux';
@@ -323,43 +323,19 @@ const Homescreen = ({ route, navigation }) => {
   //   return true;
   // };
   console.log("isDisabled():", isDisabled());
-  // const openPicker = async () => {
-  //   const response = await DocumentPicker.pick({
-  //     presentationStyle: 'fullScreen',
-  //   });
-  //   const newFilesTotalSize = response.reduce((sum, file) => sum + file.size, 0);
-  //   const existingFilesTotalSize = docs.reduce((sum, file) => sum + file.size, 0);
-  //   const combinedSize = newFilesTotalSize + existingFilesTotalSize;
-  //   const MAX_TOTAL_SIZE = 10 * 1024 * 1024;
-  //   if (combinedSize > MAX_TOTAL_SIZE) {
-  //     // Alert.alert('Total file size should not exceed 8MB');
-  //     Toast.show({
-  //       type: 'error',
-  //       text2: 'Total file size should not exceed 8MB',
-  //       visibilityTime: 4000,
-  //       autoHide: true,
-  //     });
-  //     return;
-  //   }
-  //   setDocs([
-  //     ...docs,
-  //     ...response.map(_ => ({
-  //       ..._,
-  //       id: Date.now(),
-  //     })),
-  //   ]);
-  // };
 
 const openPicker = async () => {
   try {
     const response = await pick({ allowMultiSelection: true });
+console.log(response, "response");
 
     if (!response || response.length === 0) return;
 
     const filesWithLocalPath = await Promise.all(
       response.map(async (file) => ({
         ...file,
-        localPath: await keepLocalCopy(file.uri),
+        // localPath: await keepLocalCopy({ uri: file.uri }),
+
       }))
     );
 
@@ -398,6 +374,33 @@ const openPicker = async () => {
 };
 
   
+  // const openPicker = async () => {
+  //   const response = await DocumentPicker.pick({
+  //     presentationStyle: 'fullScreen',
+  //   });
+  //   const newFilesTotalSize = response.reduce((sum, file) => sum + file.size, 0);
+  //   const existingFilesTotalSize = docs.reduce((sum, file) => sum + file.size, 0);
+  //   const combinedSize = newFilesTotalSize + existingFilesTotalSize;
+  //   const MAX_TOTAL_SIZE = 10 * 1024 * 1024;
+  //   if (combinedSize > MAX_TOTAL_SIZE) {
+  //     // Alert.alert('Total file size should not exceed 8MB');
+  //     Toast.show({
+  //       type: 'error',
+  //       text2: 'Total file size should not exceed 8MB',
+  //       visibilityTime: 4000,
+  //       autoHide: true,
+  //     });
+  //     return;
+  //   }
+  //   setDocs([
+  //     ...docs,
+  //     ...response.map(_ => ({
+  //       ..._,
+  //       id: Date.now(),
+  //     })),
+  //   ]);
+  // };
+
   const onRemove = id => {
     let tempDocs = [...docs];
     tempDocs = tempDocs.filter(_ => _.id != id);

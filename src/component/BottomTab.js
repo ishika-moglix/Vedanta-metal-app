@@ -5,7 +5,7 @@ import Dimension from '../Theme/Dimension';
 import WebViewScreen from './WebViewScreen';
 import MoreScreen from '../containers/MoreScreen';
 // import {useFocusEffect} from '@react-navigation/native';
-import EncryptedStorage from 'react-native-encrypted-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import ServiceScreen from '../containers/Service';
 //import Toast from 'react-native-toast-message';
 import CustomeIcon from './CustomeIcon';
@@ -293,6 +293,10 @@ const HOME_STACK = [
     name: 'VocForm',
     component: VocFormScreen
   },
+  {
+    name: 'Profile',
+    component: Profile,
+  },
 ];
 
 const HomeStack = param => {
@@ -366,6 +370,10 @@ const DASHBOARD_STACK = [
   {
     name: 'ContractList',
     component: ContractListScreen
+  },
+  {
+    name: 'Profile',
+    component: Profile,
   },
 ]
 
@@ -726,7 +734,7 @@ const BottomTab = props => {
     try {
       console.log("RemoteMessage get from backend ", remoteMessage);
 
-      const jsonValue = await EncryptedStorage.getItem('@user_info');
+      const jsonValue = await AsyncStorage.getItem('@user_info');
       if (jsonValue) {
         const getPlantId = await AsyncStorage.getItem('@plantId');
         let info = JSON.parse(jsonValue);

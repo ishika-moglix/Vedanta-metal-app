@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "711990454300",
+    "project_id": "vedanta-moglix",
+    "storage_bucket": "vedanta-moglix.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:711990454300:android:758adb22606dfa87b1d7d9",
+        "android_client_info": {
+          "package_name": "com.moglix.vedanta"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "711990454300-efg151us6raahb72445k3jqjkfsja362.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.moglix.vedanta",
+            "certificate_hash": "2d61db35ea3bc5646c0992aacda2f372a3c7731c"
+          }
+        },
+        {
+          "client_id": "711990454300-g5etfm50ib7p2tkhdb472r6oabqkmack.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_zMQlXNN6BDO0VXgkOprPq2NKfupnPDY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "711990454300-g5etfm50ib7p2tkhdb472r6oabqkmack.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "711990454300-d6rlrnliarlnh2sa1o9ckqmo55vti0qr.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.moglix.vedanta"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

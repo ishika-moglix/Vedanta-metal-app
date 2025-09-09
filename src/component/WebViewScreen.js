@@ -15,6 +15,7 @@ import CONSTANTS from '../services/constant';
 import Dimension from '../Theme/Dimension';
 import { BackHandler } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
+// import RNFetchBlob from 'rn-fetch-blob';
 import RNFetchBlob from 'react-native-blob-util';
 import Toast from 'react-native-toast-message';
 import Share from 'react-native-share';
@@ -411,63 +412,62 @@ const WebViewScreen = props => {
   //   await AsyncStorage.clear();
   //   authState.setIsLoggedIn(false);
   // };
-
- 
-const downLoadFileIos = async (url, fileName, extension) => {
-  try {
-    const { DocumentDir, DownloadDir } = RNFetchBlob.fs.dirs;
-
-    const fPath =
-      (Platform.OS === 'android' ? DownloadDir : DocumentDir) +
-      '/' +
-      fileName +
-      '.' +
-      extension;
-
-    const configOptions = Platform.select({
-      ios: {
-        fileCache: true,
-        path: fPath,
-        appendExt: extension,
-        mime: `application/${extension}`,
-      },
-      android: {
-        fileCache: true,
-        path: fPath,
-        appendExt: extension,
-        mime: `application/${extension}`,
-        addAndroidDownloads: {
-          useDownloadManager: true,
-          notification: true,
+  
+  const downLoadFileIos = async (url, fileName, extension) => {
+    try {
+      const { DocumentDir, DownloadDir } = RNFetchBlob.fs.dirs;
+  
+      // Path banado
+      const fPath =
+        (Platform.OS === 'android' ? DownloadDir : DocumentDir) +
+        '/' +
+        fileName +
+        '.' +
+        extension;
+  
+      const configOptions = Platform.select({
+        ios: {
+          fileCache: true,
           path: fPath,
-          description: 'Downloading File...',
+          appendExt: extension,
           mime: `application/${extension}`,
         },
-      },
-    });
-
-    const res = await RNFetchBlob.config(configOptions).fetch('GET', url);
-
-    if (Platform.OS === 'ios') {
-      const options = {
-        type: `application/${extension}`,
-        url: res.path(),
-        saveToFiles: true,
-      };
-      await Share.open(options).catch(err => console.log(err));
+        android: {
+          fileCache: true,
+          path: fPath,
+          appendExt: extension,
+          mime: `application/${extension}`,
+          addAndroidDownloads: {
+            useDownloadManager: true,
+            notification: true,
+            path: fPath,
+            description: 'Downloading File...',
+            mime: `application/${extension}`,
+          },
+        },
+      });
+  
+      const res = await RNFetchBlob.config(configOptions).fetch('GET', url);
+  
+      if (Platform.OS === 'ios') {
+        const options = {
+          type: `application/${extension}`,
+          url: res.path(),
+          saveToFiles: true, 
+        };
+        await Share.open(options).catch(err => console.log(err));
+      }
+  
+      // Toast.show({ type: 'success', text2: 'File downloaded successfully!' });
+    } catch (e) {
+      Toast.show({
+        type: 'error',
+        text2: e?.message || 'Something went wrong!',
+        visibilityTime: 4000,
+        autoHide: true,
+      });
     }
-
-    // Toast.show({ type: 'success', text2: 'File downloaded successfully!' });
-  } catch (e) {
-    Toast.show({
-      type: 'error',
-      text2: e?.message || 'Something went wrong!',
-      visibilityTime: 4000,
-      autoHide: true,
-    });
-  }
-};
-
+  };
   
   // const downLoadFileIos = async (url, fileName, extension) => {
   //   const {
@@ -529,9 +529,7 @@ const downLoadFileIos = async (url, fileName, extension) => {
   //       });
   //     });
   // };
-
-
-
+  
   // Alert.alert(`final url, ${finalUrl}`);
   console.log(finalUrl, 'finalUrl');
   console.log('webview props', props, "showback", showBack);

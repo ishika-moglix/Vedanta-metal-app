@@ -19,7 +19,7 @@ import customerRegistrationReducer from './feature/customerRegSlice'
 import dashboardReducer from './feature/dashboardSlice';
 
 // const sagaMiddleware = createSagaMiddleware();
-// console.log(sagaMiddleware);
+
 const store = configureStore({
   reducer: {
     auth: authReducer,
@@ -40,7 +40,7 @@ const store = configureStore({
     dashboard: dashboardReducer,
   },
   // middleware: getDefaultMiddleware =>
-    // getDefaultMiddleware().concat(sagaMiddleware),
+  //   getDefaultMiddleware().concat(sagaMiddleware),
 });
 
 // sagaMiddleware.run(rootSaga);

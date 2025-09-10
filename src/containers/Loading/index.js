@@ -1,12 +1,14 @@
 import React, {useEffect} from 'react';
-import {View, ActivityIndicator, Text} from 'react-native';
+import {View, ActivityIndicator, Text, Image} from 'react-native';
 import Colors from '../../Theme/Colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch} from 'react-redux';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 import {setLogin} from '../../redux/actions/auth';
 import {setAuth} from '../../redux/feature/authslice';
-import {STATE_STATUS} from '../../redux/constants';
+import { STATE_STATUS } from '../../redux/constants';
+import Dimension from '../../Theme/Dimension';
+
 const LoadingScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -57,10 +59,15 @@ const LoadingScreen = ({navigation, route}) => {
 
   return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <ActivityIndicator
+      {/* <ActivityIndicator
         size={'large'}
         color={Colors.darkBlue}
         style={{alignSelf: 'center'}}
+      /> */}
+       <Image
+        source={require('../../assets/images/logo.png')} 
+        style={[{height: Dimension.height100, width: Dimension.width200}]}
+        resizeMode="contain"
       />
     </View>
   );

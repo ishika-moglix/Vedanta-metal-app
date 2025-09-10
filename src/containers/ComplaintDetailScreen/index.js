@@ -16,7 +16,7 @@ import Header from '../../component/Header';
 import CustomLoader from '../../component/customLoader';
 import Toast from 'react-native-toast-message';
 import { useSelector, useDispatch } from 'react-redux';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 // import { stat } from 'react-native-fs';
 import { showMessage } from '../../utils/BiometricAuth';
 //import { Card} from "react-native-elements";

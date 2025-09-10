@@ -100,10 +100,10 @@ function* getComplaintById({ payload }) {
 }
 
 function* getAllCCHPProductVariants({ payload }) {
-    // console.log('hit this getAllCCH saga', payload);
+    console.log('hit this getAllCCH saga', payload);
     try {
         const data = yield call(ScannerService.getAllCCHPProductVariants, payload);
-        // console.log('getAllCCHH prod data', data);
+        console.log('getAllCCHH prod data', data);
         if (data?.data?.success) {
             yield put(getCCHPProductVariantsSuccess(data?.data?.data));
         } else {

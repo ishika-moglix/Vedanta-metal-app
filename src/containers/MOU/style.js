@@ -76,7 +76,7 @@ export default StyleSheet.create({
   },
   SearchWrap: {
     flexDirection: 'row',
-    //flex:1,
+    
     justifyContent: 'space-between',
     height: Dimension.height50,
     margin: Dimension.margin14,
@@ -89,11 +89,13 @@ export default StyleSheet.create({
   },
   searchIcon: {
     position: 'absolute',
+    flex: 1,
     top: 12,
     left: 10,
-    width: 24,
-    zIndex: 999,
-    // alignSelf: 'center',
+    width: Dimension.width24,
+    zIndex: 9999,
+    elevation: 16,
+    shadowColor: '#455B6324',
   },
   searchBar: {
     fontSize: Dimension.font14,
@@ -108,7 +110,7 @@ export default StyleSheet.create({
     elevation: 16,
     shadowColor: '#455B6324',
     paddingHorizontal: Dimension.padding15,
-    paddingLeft: 40,
+    paddingLeft: Dimension.padding40,
     marginRight: Dimension.margin10,
   },
   searchbtn: {

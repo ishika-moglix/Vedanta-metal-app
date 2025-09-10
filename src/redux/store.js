@@ -6,7 +6,7 @@ import bankDetailsReducer from './feature/BankDetailsSlice';
 import documentsReducer from './feature/documentsSlice';
 import plantsReducer from './feature/plantsSlice';
 import rootSaga from './sagas/rootSaga';
-import createSagaMiddleware from 'redux-saga';
+// import createSagaMiddleware from 'redux-saga';
 import headerReducer from './feature/homeSlice';
 import sessionReducer from './feature/homeSlice';
 import searchPlantsReducer from './feature/homeSlice';
@@ -17,8 +17,8 @@ import vocListReducer from './feature/vocSlice';
 import notiReducer from './feature/notification';
 import customerRegistrationReducer from './feature/customerRegSlice'
 import dashboardReducer from './feature/dashboardSlice';
-
-// const sagaMiddleware = createSagaMiddleware();
+const createSagaMiddleware = require('redux-saga').default;
+const sagaMiddleware = createSagaMiddleware();
 
 const store = configureStore({
   reducer: {
@@ -39,10 +39,10 @@ const store = configureStore({
     customerRegistration: customerRegistrationReducer,
     dashboard: dashboardReducer,
   },
-  // middleware: getDefaultMiddleware =>
-  //   getDefaultMiddleware().concat(sagaMiddleware),
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware().concat(sagaMiddleware),
 });
 
-// sagaMiddleware.run(rootSaga);
+sagaMiddleware.run(rootSaga);
 
 export default store;

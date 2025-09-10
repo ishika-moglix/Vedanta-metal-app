@@ -399,11 +399,10 @@ const FeedScreen = props => {
       </View>
     );
   };
-  //  console.log("auth", auth)
   return (
-    
+  <>
+     {isLoader && <CustomLoader fullScreen />}
     <View style={styles.containerWrap}>
-      {isLoader && <CustomLoader fullScreen/>}
       <Header
         navigation={props.navigation}
         showBack
@@ -669,7 +668,8 @@ const FeedScreen = props => {
           </View>
         </Modal>
       )}
-    </View>
+      </View>
+      </>
   );
 };
 

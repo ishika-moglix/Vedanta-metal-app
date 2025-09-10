@@ -62,6 +62,7 @@ const Homescreen = ({ route, navigation }) => {
   const [docs, setDocs] = useState([]);
   const [loader, setLoader] = useState(false);
   //const [radioButtons, setRadioButtons] = useState(radioButtonsData);
+console.log(cchpProductVariants, "cchpProductVariants from voc");
 
   let categoryOptions = [
     { value: 'Finance', label: 'Finance' },
@@ -610,16 +611,16 @@ console.log(response, "response");
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                width: Dimension.width130,
+                // width: Dimension.width130,
                 borderColor: Colors.darkBlue,
                 borderWidth: 1,
-                padding: Dimension.padding4,
+                padding: Dimension.padding5,
                 borderRadius: 4,
-                marginBottom: Dimension.margin12,
+                marginBottom: Dimension.margin10,
               }}>
               <Text
                 numberOfLines={1}
-                style={{ color: Colors.darkBlue, width: '80%' }}>
+                style={{ fontSize: Dimension.font13, fontFamily: Dimension.CustomBoldFont, color: Colors.darkBlue, width: '80%' }}>
                 {doc.name}
               </Text>
               <Icon

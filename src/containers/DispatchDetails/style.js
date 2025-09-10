@@ -89,10 +89,13 @@ export default StyleSheet.create({
   },
   searchIcon: {
     position: 'absolute',
+    flex: 1,
     top: 12,
     left: 10,
-    width: 24,
-    zIndex: 999,
+    width: Dimension.width24,
+    zIndex: 9999,
+    elevation: 16,
+    shadowColor: '#455B6324',
     // alignSelf: 'center',
   },
   searchBar: {

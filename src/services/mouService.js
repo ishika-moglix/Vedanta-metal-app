@@ -1,4 +1,4 @@
-// import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import CONSTANTS from './constant';
 import axios from 'axios';
 

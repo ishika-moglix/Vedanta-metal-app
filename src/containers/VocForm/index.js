@@ -25,7 +25,7 @@ import Select from '../../component/Select';
 import { setBankDetails } from '../../redux/feature/BankDetailsSlice';
 import { convertDate, convertDateToTimestamp, convertedDate, convertedDated, showMessage } from '../../utils/BiometricAuth';
 import NextButton from '../../component/Button'
-// import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import RNFetchBlob from 'rn-fetch-blob';
 import { all } from 'redux-saga/effects';
 import axios from 'axios';

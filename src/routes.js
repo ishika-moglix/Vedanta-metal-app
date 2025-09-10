@@ -25,10 +25,8 @@ import BiometricScreen from './containers/Biometric.js';
 import firebase from '@react-native-firebase/app';
 import messaging from '@react-native-firebase/messaging';
 import {Alert} from 'react-native';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import NotificationModal from './component/NotificationModal';
-// import Toast from 'react-native-toast-message';
 const navigationRef = React.createRef();
 const Stack = createNativeStackNavigator();
 

@@ -26,10 +26,13 @@ import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { getApprovedCustomerListRequest } from '../../redux/feature/mouslice';
 import { useSelector, useDispatch } from 'react-redux';
+import { getCCHPProductVariantsRequest, getFeedbackCategoryRequest } from '../../redux/feature/vocSlice';
 const SelectionScreen = ({ route, navigation }) => {
   //const navigation = useNavigation();
   const dispatch = useDispatch();
   const authData = useSelector(state => state.auth?.data);
+  const authReducer = useSelector(state => state.auth?.data);
+  const branchAccessData = useSelector(state => state.branchAccess);
   const radioButtonsData = [
     {
       id: '1',
@@ -40,6 +43,7 @@ const SelectionScreen = ({ route, navigation }) => {
       color: '#0063A7',
       labelStyle: styles.radioTxt,
       containerStyle: styles.radioWrap,
+  
     },
     {
       id: '2',
@@ -61,6 +65,8 @@ const SelectionScreen = ({ route, navigation }) => {
   const [showType, setScanType] = useState('');
   const [radioButtons, setRadioButtons] = useState(radioButtonsData);
   const [userInfo, setUser] = useState();
+  const [onPress, setOnPress] = useState(1);
+
   useEffect(() => {
     checkTYpe();
     getSession();
@@ -130,8 +136,13 @@ console.log("selection props", route);
     }
   };
   const onPressRadioButton = radioButtonsArray => {
-    setRadioButtons(radioButtonsArray);
+    console.log(radioButtonsArray, "radioButtonsArray");
+    setOnPress(radioButtonsArray)
+    // setRadioButtons(radioButtonsArray);
   };
+
+  console.log(radioButtons, "radioButtons");
+  
   const responseValue = value => {
     //setLoader(true);
     //alert(value.data)
@@ -244,13 +255,34 @@ console.log("selection props", route);
     setQR(!showQR);
   };
   const continueNavigate = () => {
-    let selectedButton = radioButtons.find(e => e.selected == true);
-    //console.log(showOldInfo)
-    navigation.navigate('Homes', {
-      oldData: route?.params?.oldInfo,
-      userInfo: route?.params?.info || userInfo,
-      type: selectedButton.value,
-    });
+   
+    try {
+      let selectedButton = radioButtons.find(e => e.selected == true);
+      dispatch(
+        getApprovedCustomerListRequest({
+          businessUnit: authReducer?.businessUnit,
+        }),
+      );
+      dispatch(
+        getCCHPProductVariantsRequest({
+          businessUnit: authReducer?.businessUnit,
+        }),
+      );
+      dispatch(
+        getFeedbackCategoryRequest({
+          businessUnit: authReducer?.businessUnit,
+          role: branchAccessData?.isCustomer ? 'Customer' : 'supplier'
+        }),
+      );
+      navigation.navigate('Homes', {
+        oldData: route?.params?.oldInfo,
+        userInfo: route?.params?.info || userInfo,
+        type: selectedButton.value,
+      });
+    }
+      catch (error) {
+      console.log('Error in continueNavigate:', error);
+    }
   };
   return (
     <View
@@ -296,10 +328,12 @@ console.log("selection props", route);
             <View>
               <View style={styles.radioView}>
                 <Text style={styles.SelectTypeTxt}>Select Type</Text>
+                {console.log(radioButtons, "radioButtons")}
                 <RadioGroup
                   radioButtons={radioButtons}
                   onPress={onPressRadioButton}
                   layout="row"
+                  selectedId={onPress}
                   containerStyle={{ flex: 1 }}
                 />
               </View>

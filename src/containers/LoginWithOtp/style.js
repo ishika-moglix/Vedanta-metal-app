@@ -149,10 +149,11 @@ export default StyleSheet.create({
   // marginBottom: Dimension.margin20,
   // },
   pickerWrapBtn: {
-    height: 40,
+    height: Dimension.height40,
     paddingLeft: Dimension.padding8,
     alignItems: 'flex-start',
     paddingVertical: Dimension.padding8,
+    justifyContent: 'center',
     position: 'relative',
   },
   PickerTxt: {

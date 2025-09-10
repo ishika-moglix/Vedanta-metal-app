@@ -92,32 +92,6 @@ export default class App extends React.Component {
     loading: false,
   };
 
-  // isEmulator = async () => {
-  //   try {
-  //     const device = await DeviceInfo.isEmulator();
-  //     const camera =
-  //       Platform.OS == 'android' ? await DeviceInfo.isCameraPresent() : true;
-  //     const handsetType = ['Handset', 'Tablet'].includes(
-  //       DeviceInfo.getDeviceType(),
-  //     );
-  //     const manufacturer = await DeviceInfo.getManufacturer();
-  //     const keyboard = await DeviceInfo.isKeyboardConnected();
-  //     this.setState({
-  //       loading: false,
-  //       show: !(
-  //         JailMonkey.isJailBroken() ||
-  //         device ||
-  //         !camera ||
-  //         !handsetType ||
-  //         !['Apple', 'Google'].includes(manufacturer) ||
-  //         keyboard
-  //       ),
-  //     });
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // };
-
   collectAnalytics = async () => {
     await firebase.analytics().setAnalyticsCollectionEnabled(true);
   };
@@ -126,14 +100,13 @@ export default class App extends React.Component {
     this.collectAnalytics();
   }
 
-  componentWillUnmount() {
-    if (typeof removeThreatListeners === 'function') {
-      removeThreatListeners();
-    }
-  }
+  // componentWillUnmount() {
+  //   if (typeof removeThreatListeners === 'function') {
+  //     removeThreatListeners();
+  //   }
+  // }
   render() {
     const { show, loading } = this.state;
-    console.log(show, loading, 'show, loading,');
     
     if (!show) {
       return (

@@ -1,4 +1,4 @@
-import React from 'react';
+import {React, useState, useEffect} from 'react';
 import Dimension from '../Theme/Dimension';
 import {
   StyleSheet,
@@ -8,11 +8,43 @@ import {
   Button,
   TouchableOpacity,
   Platform,
+  PermissionsAndroid
 } from 'react-native';
-// import { RNCamera } from 'react-native-camera';
+import { Camera } from 'react-native-camera-kit';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Scanner = props => {
+  const [hasPermission, setHasPermission] = useState(false);
+
+  useEffect(() => {
+    const requestCameraPermission = async () => {
+      if (Platform.OS === 'android') {
+        try {
+          const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.CAMERA,
+            {
+              title: 'Camera Permission',
+              message: 'This app requires access to your camera to scan QR codes',
+              buttonNeutral: 'Ask Me Later',
+              buttonNegative: 'Cancel',
+              buttonPositive: 'OK',
+            },
+          );
+          setHasPermission(granted === PermissionsAndroid.RESULTS.GRANTED);
+        } catch (err) {
+          console.warn(err);
+        }
+      } else {
+        // iOS: Camera permission automatically handled via Info.plist
+        setHasPermission(true);
+      }
+    };
+
+    requestCameraPermission();
+  }, []);
+
+console.log(hasPermission, "PermissionsAndroid.RESULTS.GRANTED");
+
   const onSuccess = e => {
     //alert(JSON.stringify(e))
     //setValue(JSON.stringify(e))
@@ -54,6 +86,30 @@ const Scanner = props => {
             <Text style={styles.discardTxt}>Discard</Text>
           </TouchableOpacity>
         </View>
+        {hasPermission ? (
+          <Camera
+            style={[styles.camera, {flex:1}]}
+            scanBarcode={true}
+            showFrame={true}
+            laserColor={'#FF0000'}
+            frameColor={'#00FF00'}
+            onReadCode={event => {
+              console.log(
+                'Scanned code:',
+                event.nativeEvent.codeStringValue,
+              );
+              if (event?.nativeEvent?.codeStringValue) {
+                onSuccess({ data: event.nativeEvent.codeStringValue });
+              }
+            }}
+          />
+        ) : (
+          <View style={styles.permissionContainer}>
+            <Text style={{ color: '#fff' }}>
+              Camera permission not granted
+            </Text>
+          </View>
+        )}
         {/* <RNCamera
           style={{
             flex: 1,

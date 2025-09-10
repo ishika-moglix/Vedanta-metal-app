@@ -15,7 +15,7 @@ import {
 } from '../feature/homeSlice';
 
 import { ScannerService } from '../../services/scannerService';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 function* fetchCreditBalance({ payload }) {
   try {
 

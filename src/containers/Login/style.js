@@ -162,6 +162,7 @@ export default StyleSheet.create({
     paddingLeft: Dimension.padding8,
     alignItems: 'flex-start',
     paddingVertical: Dimension.padding8,
+    justifyContent: 'center',
     position: 'relative',
   },
   PickerTxt: {

@@ -39,7 +39,6 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { getDispatchDetailsRequest } from '../../redux/feature/dispatchDetailsSlice';
 import { STATE_STATUS } from '../../redux/constants';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
 import Filter from '../../component/Filter';
 import NextButton from '../../component/Button';
 import HeaderFilter from '../../component/HeaderFilter';
@@ -1386,6 +1385,7 @@ console.log(search, 'setSearch');
           <TextInput
             placeholder = {activeTab === 'nfa'? "Search by NFA Number" : authData?.data?.businessUnit === 'Zinc'?  "Search by MOU Number" : "Search by Contract ID"}
             value={search}
+            placeholderTextColor="#888" 
             autoCapitalize={'characters'}
             onChangeText={search => setSearch(search.replace(filterTextRegex, ''))}
             style={styles.searchBar}

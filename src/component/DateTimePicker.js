@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     flex: 1,
     color: '#333333',
     fontSize: Dimension.font14,
-    paddingVertical: Platform.OS === 'ios' ? Dimension.padding14 : 0
+    paddingVertical: Platform.OS === 'ios' ? Dimension.padding14 : Dimension.padding10
   },
   icon: {
     marginLeft: Dimension.margin10,

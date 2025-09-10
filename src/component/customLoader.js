@@ -28,7 +28,6 @@ const CustomLoader = ({
                 style={[
                     styles.fullScreenContainer,
                     {
-
                         backgroundColor:
                             'rgba(64, 64, 64, 0.6)',
                         zIndex: 99999999999,
@@ -50,6 +49,9 @@ const styles = StyleSheet.create({
         bottom: 0,
         justifyContent: 'center',
         alignItems: 'center',
+        elevation: 16,
+        shadowColor:'#00000017',
+        
     },
     loaderContainer: {
         alignItems: 'center',

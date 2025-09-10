@@ -1212,7 +1212,7 @@ const LoginScreen = props => {
                       size={18}
                       color={'#0466A9'}
                       onPress={BUSelect}
-                      style={{ position: 'absolute', right: 15, top: 12 }}
+                      style={{ position: 'absolute', right: 15 }}
                     />
                   </TouchableOpacity>
                 </View>
@@ -1235,7 +1235,7 @@ const LoginScreen = props => {
                       size={22}
                       color={'#0466A9'}
                       onPress={() => setIsVisible(true)}
-                      style={{ position: 'absolute', right: 15, top: 8 }}
+                      style={{ position: 'absolute', right: 15}}
                     />
                   </TouchableOpacity>
                   <Modal
@@ -1404,7 +1404,7 @@ const LoginScreen = props => {
                     justifyContent: 'center',
                     alignItems: 'center',
                     paddingTop: Dimension.padding30,
-                    paddingBottom: Platform.OS === 'ios' ? Dimension.padding30 : Dimension.padding42,
+                    paddingBottom: Platform.OS === 'ios' ? Dimension.padding30 : Dimension.padding20,
                   }}>
                   <MaterialCommunityIcon
                     name={

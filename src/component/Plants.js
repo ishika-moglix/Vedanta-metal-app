@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ScannerService } from '../services/scannerService';
 import { setPlantDetails } from '../redux/feature/plantsSlice';
 import { STATE_STATUS } from '../redux/constants';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
 import axios from 'axios';
 const PlantsForm = props => {

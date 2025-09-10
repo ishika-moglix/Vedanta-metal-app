@@ -36,7 +36,7 @@ export const generatePDFUrl = (
           const vendId = vendorId.toString() == 'BALCO' ? 'BALC' : 'VALC';
           if (agreementId && vendId) {
             // url = `https://vedanta-authqa.moglilabs.com${CONSTANTS.PDF_URL.AUTH_URL_ALUMINIUM_INVOICEPDF}${agreementId}_${vendorName}_IN.PDF`;
-            url = `${CONSTANTS.PDF_URL.AUTH_URL_ALUMINIUM_INVOICEPDF_PROD}${agreementId}_${vendorName}_IN.PDF`;
+            url = `${CONSTANTS.PDF_URL.AUTH_URL_ALUMINIUM_INVOICEPDF_UAT}${agreementId}_${vendorName}_IN.PDF`;
             console.log('url', url);
           }
           break;
@@ -45,7 +45,7 @@ export const generatePDFUrl = (
         case 'Copper': {
           if (poId) {
             // url = `https://vedanta-sapqa.moglilabs.com${CONSTANTS.PDF_URL.AUTH_URL_COPPER_INVOICEPDF}${agreementId}_${financialYear}_SC_IN.PDF`;
-            url = `${CONSTANTS.PDF_URL.AUTH_URL_COPPER_INVOICEPDF_PROD}${agreementId}_${financialYear}_SC_IN.PDF`;
+            url = `${CONSTANTS.PDF_URL.AUTH_URL_COPPER_INVOICEPDF_UAT}${agreementId}_${financialYear}_SC_IN.PDF`;
             console.log('url0', url);
           }
           break;
@@ -54,7 +54,7 @@ export const generatePDFUrl = (
         case 'Zinc': {
           if (poId) {
             // url = `https://vedanta-sapqa.moglilabs.com${CONSTANTS.PDF_URL.AUTH_URL_HZL_INVOICEPDF}${invoiceNo}_${financialYear}_HZL_IN.PDF`;
-            url = `${CONSTANTS.PDF_URL.AUTH_URL_HZL_INVOICEPDF_PROD}${invoiceNo}_${financialYear}_HZL_IN.PDF`;
+            url = `${CONSTANTS.PDF_URL.AUTH_URL_HZL_INVOICEPDF_UAT}${invoiceNo}_${financialYear}_HZL_IN.PDF`;
             console.log('url1', url);
           }
           break;
@@ -75,7 +75,7 @@ export const generatePDFUrl = (
 
           const venName = vendorId.includes('VAL') ? 'VALC' : 'BALC';
           // url = `https://vedanta-authqa.moglilabs.com${CONSTANTS.PDF_URL.AUTH_URL_ALUMINIUM_INVOICEPDF}${agreementId}_${venName}_TC.pdf`;
-          url = `${CONSTANTS.PDF_URL.AUTH_URL_ALUMINIUM_TCPDF_PROD}${agreementId}_${venName}_TC.pdf`;
+          url = `${CONSTANTS.PDF_URL.AUTH_URL_ALUMINIUM_TCPDF_UAT}${agreementId}_${venName}_TC.pdf`;
           console.log('url2', url);
           break;
         }
@@ -83,7 +83,7 @@ export const generatePDFUrl = (
         case 'Copper': {
           if (checkIsNull(agreementId, 'Agreement ID is Not Present')) return;
           // url = `https://vedanta-sapqa.moglilabs.com/${CONSTANTS.PDF_URL.AUTH_URL_COPPER_TCPDF}${invoiceNo}_${financialYear}_SC_TC.pdf`;
-          url = `${CONSTANTS.PDF_URL.AUTH_URL_COPPER_TCPDF_PROD}${invoiceNo}_${financialYear}_SC_TC.PDF`;
+          url = `${CONSTANTS.PDF_URL.AUTH_URL_COPPER_TCPDF_UAT}${invoiceNo}_${financialYear}_SC_TC.PDF`;
           console.log('url3', url);
           break;
         }
@@ -91,7 +91,7 @@ export const generatePDFUrl = (
         case 'Zinc': {
           if (checkIsNull(agreementId, 'Agreement ID is Not Present')) return;
           // url = `https://vedanta-sapqa.moglilabs.com${CONSTANTS.PDF_URL.AUTH_URL_HZL_TCPDF}${invoiceNo}_${financialYear}_HZL_TC.pdf`;
-          url = `${CONSTANTS.PDF_URL.AUTH_URL_HZL_TCPDF_PROD}${invoiceNo}_${financialYear}_HZL_TC.PDF`;
+          url = `${CONSTANTS.PDF_URL.AUTH_URL_HZL_TCPDF_UAT}${invoiceNo}_${financialYear}_HZL_TC.PDF`;
           console.log('url4', url);
           break;
         }
@@ -109,7 +109,7 @@ export const generatePDFUrl = (
           if (checkIsNull(invoiceNo, 'Invoice Number is Not Present')) return;
           const vendId = vendorId.toString() == 'BALCO' ? 'BALC' : 'VALC';
           // url = `https://vedanta-auth.moglix.com/${CONSTANTS.PDF_URL.AUTH_URL_ALUMINIUM_LRPDF}${invoiceNo}_${vendId}_${financialYear}_LR.PDF`;
-          url = `${CONSTANTS.PDF_URL.AUTH_URL_ALUMINIUM_LRPDF_PROD}${invoiceNo}_${vendId}_${financialYear}_LR.PDF`;
+          url = `${CONSTANTS.PDF_URL.AUTH_URL_ALUMINIUM_LRPDF_UAT}${invoiceNo}_${vendId}_${financialYear}_LR.PDF`;
           console.log('url5', url);
           break;
         }
@@ -117,7 +117,7 @@ export const generatePDFUrl = (
         case 'Copper': {
           if (checkIsNull(invoiceNo, 'Invoice Number is Not Present')) return;
           // url = `https://vedanta-sapqa.moglilabs.com${CONSTANTS.PDF_URL.AUTH_URL_CU_LRPDF}${agreementId}_${financialYear}_LR.PDF`;
-          url = `${CONSTANTS.PDF_URL.AUTH_URL_COPPER_LRPDF_PROD}${agreementId}_${financialYear}_LR.PDF`;
+          url = `${CONSTANTS.PDF_URL.AUTH_URL_COPPER_LRPDF_UAT}${agreementId}_${financialYear}_LR.PDF`;
           console.log('url6', url);
           break;
         }
@@ -125,7 +125,7 @@ export const generatePDFUrl = (
         case 'Zinc': {
           if (checkIsNull(invoiceNo, 'Invoice Number is Not Present')) return;
           // url = `https://vedanta-sapqa.moglilabs.com${CONSTANTS.PDF_URL.AUTH_URL_HZL_LRPDF}${agreementId}_${financialYear}_LR.PDF`;
-          url = `${CONSTANTS.PDF_URL.AUTH_URL_HZL_LRPDF_PROD}${agreementId}_${financialYear}_LR.PDF`;
+          url = `${CONSTANTS.PDF_URL.AUTH_URL_HZL_LRPDF_UAT}${agreementId}_${financialYear}_LR.PDF`;
           console.log('url7', url);
           break;
         }
@@ -145,7 +145,7 @@ export const generatePDFUrl = (
           let vendId = vendorId.includes('VAL') ? 'VALC' : 'BALC';
           // url = `${CONSTANTS.AUTH_BASE_URL}${CONSTANTS.PDF_URL.AUTH_URL_ALUMINIUM_PLPDF}${agreementId}_${vendId}_PL.pdf`;
           // url = `https://vedanta-auth.moglix.com${CONSTANTS.PDF_URL.AUTH_URL_ALUMINIUM_PLPDF}${agreementId}_${vendId}_PL.pdf`;
-          url = `${CONSTANTS.PDF_URL.AUTH_URL_ALUMINIUM_PLPDF_PROD}${agreementId}_${vendId}_PL.pdf`;
+          url = `${CONSTANTS.PDF_URL.AUTH_URL_ALUMINIUM_PLPDF_UAT}${agreementId}_${vendId}_PL.pdf`;
           console.log('url8', url);
           break;
         }
@@ -153,7 +153,7 @@ export const generatePDFUrl = (
         case 'Copper': {
           if (checkIsNull(agreementId, 'Agreement ID is Not Present')) return;
           // url = `https://vedanta-sapqa.moglilabs.com${CONSTANTS.PDF_URL.AUTH_URL_COPPER_PLPDF}${billingNo}_${vendorNameComm}_${financialYear}_SC_PL_LIST.pdf`;
-          url = `${CONSTANTS.PDF_URL.AUTH_URL_COPPER_PLPDF_PROD}${billingNo}_${vendorNameComm}_${financialYear}_SC_PC_LIST.PDF`;
+          url = `${CONSTANTS.PDF_URL.AUTH_URL_COPPER_PLPDF_UAT}${billingNo}_${vendorNameComm}_${financialYear}_SC_PC_LIST.PDF`;
           console.log('url9', url);
           break;
         }
@@ -161,7 +161,7 @@ export const generatePDFUrl = (
         case 'Zinc': {
           if (checkIsNull(agreementId, 'Agreement ID is Not Present')) return;
           // url = `https://vedanta-sapqa.moglilabs.com${CONSTANTS.PDF_URL.AUTH_URL_HZL_PLPDF}${invoiceNo}_${financialYear}_HZL_RV.pdf`;
-          url = `${CONSTANTS.PDF_URL.AUTH_URL_HZL_PLPDF_PROD}${invoiceNo}_${financialYear}_HZL_RV.pdf`;
+          url = `${CONSTANTS.PDF_URL.AUTH_URL_HZL_PLPDF_UAT}${invoiceNo}_${financialYear}_HZL_RV.pdf`;
           console.log('url10', url);
           break;
         }

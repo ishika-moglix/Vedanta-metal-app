@@ -37,6 +37,11 @@
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
+	<key>NSCameraUsageDescription</key>
+<string>For taking photos</string>
+
+<key>NSPhotoLibraryUsageDescription</key>
+<string>For saving photos</string>
 	<array>
 		<string>arm64</string>
 	</array>

@@ -33,7 +33,7 @@ export default StyleSheet.create({
   containerWrap: {
     flex: 1,
     backgroundColor: '#F7F7F7',
-    position: 'relative',
+    // position: 'relative',
   },
   TopWrap: {
     padding: Dimension.padding15,
@@ -67,14 +67,17 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     height: Dimension.height50,
     marginVertical: Dimension.margin15,
-    position: 'relative',
+    // position: 'relative',
   },
   searchIcon: {
     position: 'absolute',
+    flex: 1,
     top: 12,
     left: 10,
-    width: 24,
-    zIndex: 999,
+    width: Dimension.width24,
+    zIndex: 9999,
+    elevation: 16,
+    shadowColor: '#455B6324',
   },
   searchBar: {
     fontSize: Dimension.font14,
@@ -273,7 +276,6 @@ export default StyleSheet.create({
     elevation: 16,
     shadowColor: '#455B6324',
     backgroundColor: '#0063A7',
-    alignContent: 'center',
     justifyContent: 'center',
     alignItems: 'center',
   },

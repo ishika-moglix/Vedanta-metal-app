@@ -15,7 +15,7 @@ import FloatingLabelInputField from '../component/FloatingInput';
 import { useDispatch, useSelector } from 'react-redux';
 import { ScannerService } from '../services/scannerService';
 import { setBankDetails } from '../redux/feature/BankDetailsSlice';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { STATE_STATUS } from '../redux/constants';
 import {
   bankNameExp,

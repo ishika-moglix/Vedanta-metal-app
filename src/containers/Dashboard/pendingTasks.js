@@ -59,6 +59,8 @@ const PendingTaskScreen = props => {
     }, []);
     const handleAct = useCallback(async (id, type) => {
         try {
+            console.log(id, type, "id,type Act button");
+            
             const userInfo = await AsyncStorage.getItem('@user_info');
             const info = JSON.parse(userInfo);
             if (type === 'Contract NFA') {

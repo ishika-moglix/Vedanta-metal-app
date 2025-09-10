@@ -5,9 +5,51 @@ import { getPhoneNumber } from 'react-native-device-info';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import config from '.';
 
+
+const api = axios.create({
+timeout:30000, // optional
+});
+
+// Request interceptor
+api.interceptors.request.use(
+(config) => {
+  console.log('📤 [Request]');
+  console.log('URL:', config.baseURL + config.url);
+  console.log('Method:', config.method.toUpperCase());
+  console.log('Payload:', config.data || {});
+  return config;
+},
+(error) => {
+  console.error('❌ [Request Error]', error);
+  return Promise.reject(error);
+}
+);
+
+// Response interceptor
+api.interceptors.response.use(
+(response) => {
+  console.log('📥 [Response]');
+  console.log('URL:', response.config.baseURL + response.config.url);
+  console.log('Status:', response.status);
+  console.log('Response Data:', response.data);
+  return response;
+},
+(error) => {
+  if (error.response) {
+    console.error('❌ [Response Error]');
+    console.error('URL:', error.response.config.baseURL + error.response.config.url);
+    console.error('Status:', error.response.status);
+    console.error('Error Data:', error.response.data);
+  } else {
+    console.error('❌ [Network Error]', error.message);
+  }
+  return Promise.reject(error);
+}
+);
+
 async function submitFeedback(auth, obj) {
   try {
-    const { data } = await axios({
+    const { data } = await api({
       method: 'post',
       url: `${CONSTANTS.API_BASE_URL}${CONSTANTS.API_URL.SUBMIT_FEEDBACK}`,
       data: obj,
@@ -43,7 +85,7 @@ async function submitFeedback(auth, obj) {
 
 async function getToken() {
   try {
-    const { data } = await axios.post(
+    const { data } = await api.post(
       `${CONSTANTS.AUTH_BASE_URL}${CONSTANTS.API_URL.GET_TOKEN}`,
       {},
       {
@@ -61,7 +103,7 @@ async function getToken() {
 
 async function Login(OBJ) {
   try {
-    const { data } = await axios.post(
+    const { data } = await api.post(
       `${CONSTANTS.AUTH_BASE_URL}${CONSTANTS.API_URL.LOGIN}`,
       OBJ,
       {
@@ -78,7 +120,7 @@ async function Login(OBJ) {
 }
 async function forgotPassword(email) {
   try {
-    const { data } = await axios.post(
+    const { data } = await api.post(
       `${CONSTANTS.AUTH_BASE_URL}${CONSTANTS.API_URL.FORGETPASSWORD}`,
       {
         email,
@@ -100,7 +142,7 @@ async function forgotPassword(email) {
 
 // async function forgotPassword(email) {
 //   try {
-//      const {data} = await axios.post(
+//      const {data} = await api.post(
 //       `${CONSTANTS.AUTH_BASE_URL}${CONSTANTS.API_URL.FORGETPASSWORD}`,
 //       {
 //         email,
@@ -122,7 +164,7 @@ async function forgotPassword(email) {
 
 // async function signUp(userDetails) {
 //   try {
-//     const { data } = await axios.post(
+//     const { data } = await api.post(
 //       `${CONSTANTS.AUTH_BASE_URL}${CONSTANTS.API_URL.SIGNUP}`,
 //       userDetails,
 //       {
@@ -142,7 +184,7 @@ async function forgotPassword(email) {
 
 const signUp = async userDetails => {
   try {
-    const response = await axios.post(
+    const response = await api.post(
       `${CONSTANTS.AUTH_BASE_URL}${CONSTANTS.API_URL.SIGNUP}`,
       userDetails,
       {
@@ -164,7 +206,7 @@ const signUp = async userDetails => {
 
 async function getSaltInfo(OBJ) {
   try {
-    const { data } = await axios.post(
+    const { data } = await api.post(
       `${CONSTANTS.AUTH_BASE_URL}${CONSTANTS.API_URL.GETUSER_DATA}`,
       OBJ,
       {
@@ -182,7 +224,7 @@ async function getSaltInfo(OBJ) {
 
 async function ScanData(code, auth) {
   try {
-    const { data } = await axios.get(
+    const { data } = await api.get(
       `${CONSTANTS.API_BASE_URL}${CONSTANTS.API_URL.QR_DETAIL}${code}`,
       {
         headers: {
@@ -221,7 +263,7 @@ async function ScanData(code, auth) {
 
 async function ScanBatchData(code, auth) {
   try {
-    const { data } = await axios.get(
+    const { data } = await api.get(
       `${CONSTANTS.API_BASE_URL}${CONSTANTS.API_URL.QR_BATCH_DETAIL}${code}`,
       {
         headers: {
@@ -260,7 +302,7 @@ async function ScanBatchData(code, auth) {
 
 async function ScanBarCode(code, auth) {
   try {
-    const { data } = await axios.get(
+    const { data } = await api.get(
       `${CONSTANTS.API_BASE_URL}${CONSTANTS.API_URL.BAR_DETAIL}${code}`,
       {
         headers: {
@@ -299,7 +341,7 @@ async function ScanBarCode(code, auth) {
 async function FeedList(auth, type, userType) {
   const BUtype = JSON.parse(await AsyncStorage.getItem('@user_info'));
   try {
-    const { data } = await axios.post(
+    const { data } = await api.post(
       `${CONSTANTS.API_BASE_URL}${CONSTANTS.API_URL.FEEDBACK_LIST}`,
       {
         complaintType: type,
@@ -334,7 +376,7 @@ async function SearchList(auth, compNo) {
   const BUtype = JSON.parse(await AsyncStorage.getItem('@user_info'));
   // compNo
   try {
-    const { data } = await axios.post(
+    const { data } = await api.post(
       `${CONSTANTS.API_BASE_URL}${CONSTANTS.API_URL.FEEDBACK_LIST}`,
       {
         complaintNo: compNo,
@@ -411,7 +453,7 @@ async function GetSession(message) {
     const getPlantId = await AsyncStorage.getItem('@plantId');
     let jsonSessionData = JSON.parse(sessionData);
     let plantId = JSON.parse(getPlantId);
-    const { data } = await axios.post(
+    const { data } = await api.post(
       `${CONSTANTS.AUTH_BASE_URL}${CONSTANTS.API_URL.SESSION_ID}`,
       sOBJ,
       {
@@ -433,7 +475,7 @@ async function GetSession(message) {
 async function GetBranchAcc(auth) {
   try {
     let sOBJ = { idUser: auth.userId, idBranch: auth.branchId };
-    const { data } = await axios.post(
+    const { data } = await api.post(
       `${CONSTANTS.AUTH_BASE_URL}${CONSTANTS.API_URL.BRANCH_ACCESS}`,
       sOBJ,
       {
@@ -465,7 +507,7 @@ async function GetData() {
 }
 
 const deactivateAccount = async (OBJ, auth) =>
-  axios.post(
+  api.post(
     `${CONSTANTS.AUTH_BASE_URL}${CONSTANTS.API_URL.DEACTIVATE_USER}`,
     OBJ,
     {
@@ -481,7 +523,7 @@ const deactivateAccount = async (OBJ, auth) =>
   );
 
 const logoutApi = async data =>
-  axios.post(
+  api.post(
     `${CONSTANTS.AUTH_BASE_URL}${CONSTANTS.API_URL.LOGOUT}`,
     {},
     {
@@ -495,7 +537,7 @@ const logoutApi = async data =>
 
 const getTaxpayerByGstin = async gstin => {
   try {
-    const response = await axios.get(
+    const response = await api.get(
       `https://address.moglix.com/address/getTaxpayerByGstin?gstin=${gstin}`,
       {
         headers: {
@@ -514,7 +556,7 @@ const getTaxpayerByGstin = async gstin => {
 };
 
 const sendPhoneOtp = async phone =>
-  axios.post(
+  api.post(
     `${CONSTANTS.AUTH_BASE_URL}${CONSTANTS.API_URL.SEND_OTP}`,
     { phone },
     {
@@ -534,7 +576,7 @@ const sendPhoneOtp = async phone =>
   );
 
 const sendEmailOtp = async email =>
-  axios.post(
+  api.post(
     `${CONSTANTS.AUTH_BASE_URL}${CONSTANTS.API_URL.SEND_OTP}`,
     { email },
     {
@@ -554,7 +596,7 @@ const sendEmailOtp = async email =>
   );
 
 const getAllProductVariants = async product => {
-  return axios.post(
+  return api.post(
     `${CONSTANTS.API_BASE_URL}${CONSTANTS.API_URL.PRODUCTVARIANTS}`,
     { businessUnit: product },
     {
@@ -580,7 +622,7 @@ const getAllProductVariants = async product => {
 const isGstinExist = async (gstNo, businessUnit) => {
   // console.log(gstNo, businessUnit);
 
-  return axios.post(
+  return api.post(
     `${CONSTANTS.AUTH_BASE_URL}${CONSTANTS.API_URL.ISGSTINEXIST}`,
     {
       gstNo,
@@ -590,7 +632,7 @@ const isGstinExist = async (gstNo, businessUnit) => {
 };
 
 const getData = async (businessUnit, email) => {
-  return axios.post(
+  return api.post(
     `${CONSTANTS.AUTH_BASE_URL}${CONSTANTS.API_URL.GETUSER_DATA}`,
     { businessUnit },
     { email },
@@ -604,7 +646,7 @@ const updateDetails = async (obj, auth) => {
     const getPlantId = await AsyncStorage.getItem('@plantId');
     let jsonSessionData = JSON.parse(sessionData);
     let plantId = JSON.parse(getPlantId);
-    return axios.post(
+    return api.post(
       `${CONSTANTS.AUTH_BASE_URL}${CONSTANTS.API_URL.UPDATE_DETAILS}`,
       obj,
       {
@@ -627,7 +669,7 @@ const updateDetails = async (obj, auth) => {
 const resetPassword = async (password, userId, key, otp) => {
   //// console.log(password, userId, key, otp);
 
-  return axios.post(
+  return api.post(
     `${CONSTANTS.AUTH_BASE_URL}${CONSTANTS.API_URL.RESET_PASSWORD}`,
     {
       password,
@@ -675,30 +717,30 @@ const uploadFile = async formData => {
 };
 
 const saveBusinessDetails = async obj =>
-  axios.post(
+  api.post(
     `${CONSTANTS.AUTH_BASE_URL}${CONSTANTS.API_URL.SAVE_BUSINESS_DETAILS}`,
     obj,
   );
 const saveMultipleAddress = async obj =>
-  axios.post(
+  api.post(
     `${CONSTANTS.AUTH_BASE_URL}${CONSTANTS.API_URL.SAVE_MULTIPLE_ADDRESS}`,
     obj,
   );
 
 const pinCodes = async pincode =>
-  axios.get(
+  api.get(
     `${CONSTANTS.AUTH_BASE_URL}${CONSTANTS.API_URL.VALIDATE_PINCODE}${pincode}`,
   );
 
 const bankDetails = async obj =>
-  axios.post(
+  api.post(
     `${CONSTANTS.AUTH_BASE_URL}${CONSTANTS.API_URL.BANK_DETAILS}`,
     obj,
   );
 
 const uploadDocuments = async (documentPath, businessUnit) => {
   try {
-    const response = await axios.post(
+    const response = await api.post(
       `${CONSTANTS.AUTH_BASE_URL}${CONSTANTS.API_URL.SAVE_DOCUMENTS}`,
       { documentPath, businessUnit, requestType:'Plant Onboarding' },
       {
@@ -715,7 +757,7 @@ const uploadDocuments = async (documentPath, businessUnit) => {
 };
 
 const rfcSubmit = async id =>
-  axios.get(`${CONSTANTS.AUTH_BASE_URL}${CONSTANTS.API_URL.RFCSUBMIT}${id}`);
+  api.get(`${CONSTANTS.AUTH_BASE_URL}${CONSTANTS.API_URL.RFCSUBMIT}${id}`);
 
 const getCreditBalance = async payload => {
   const sessionData = await AsyncStorage.getItem('@get_session');
@@ -723,7 +765,7 @@ const getCreditBalance = async payload => {
   let jsonSessionData = JSON.parse(sessionData);
   let plantId = JSON.parse(getPlantId);
   try {
-    const response = await axios.post(
+    const response = await api.post(
       `${CONSTANTS.AUTH_BASE_URL}${CONSTANTS.API_URL.GET_CREDIT_BALANCE}`,
       payload,
       {
@@ -750,7 +792,7 @@ const getLCBGreditBalance = async payload => {
   let jsonSessionData = JSON.parse(sessionData);
   let plantId = JSON.parse(getPlantId);
   try {
-    const response = await axios.post(
+    const response = await api.post(
       `${CONSTANTS.API_BASE_URL}${CONSTANTS.API_URL.GET_LCBG_BALANCE}`,
       payload,
       {
@@ -774,7 +816,7 @@ const getLCBGreditBalance = async payload => {
 const getSession = async data => {
   // console.log("data from payload", data);
 
-  return axios.post(
+  return api.post(
     `${CONSTANTS.AUTH_BASE_URL}${CONSTANTS.API_URL.GET_SESSION}`,
 
     { dataType: data?.dataType },
@@ -794,7 +836,7 @@ const searchPlantsByCompany = async data => {
   const getPlantId = await AsyncStorage.getItem('@plantId');
   let jsonSessionData = JSON.parse(sessionData);
   let plantId = JSON.parse(getPlantId);
-  return axios.post(
+  return api.post(
     `${CONSTANTS.AUTH_BASE_URL}${CONSTANTS.API_URL.SEARCH_PLANTS}`,
     data,
     {
@@ -858,7 +900,7 @@ const fetchDispatchDetails = async params => {
   try {
     // const page = new URLSearchParams(params.page).toString();
     // const pageSize = new URLSearchParams(params.pageSize).toString();
-    const response = await axios.post(
+    const response = await api.post(
       `${CONSTANTS.PROCUREMENT_BASE_URL}${CONSTANTS.API_URL.DISPATCH_SEARCH_DETAILS}?page=${params?.page}&pageSize=${params?.pageSize}`,
       // `${CONSTANTS.AUTH_BASE_URL}${CONSTANTS.API_URL.DISPATCH_SEARCH_DETAILS}?${...params}`,
       // {...params},
@@ -888,7 +930,7 @@ const getShipmentTimeStamp = async dataObj => {
   let jsonSessionData = JSON.parse(sessionData);
   let plantId = JSON.parse(getPlantId);
   try {
-    return await axios.get(
+    return await api.get(
       `${CONSTANTS.MONITORING_BASE_URL}${CONSTANTS.API_URL.SHIPMENT_TIMESTAMP}${dataObj?.plantCode}/${dataObj?.BU}`,
       {
         headers: {
@@ -913,7 +955,7 @@ const refreshData = async dataObj => {
   let jsonSessionData = JSON.parse(sessionData);
   let plantId = JSON.parse(getPlantId);
   try {
-    return await axios.post(
+    return await api.post(
       `${CONSTANTS.SAP_BASE_URL}${CONSTANTS.API_URL.REFRESH_DATA}`,
       dataObj,
       {
@@ -941,7 +983,7 @@ const branchAccess = async dataObj => {
   // console.log('dataObj is ', dataObj);
 
   try {
-    return await axios.post(
+    return await api.post(
       `${CONSTANTS.AUTH_BASE_URL}${CONSTANTS.API_URL.BRANCH_ACCESS}`,
       dataObj,
 
@@ -968,7 +1010,7 @@ const regionByPlants = async () => {
   let jsonSessionData = JSON.parse(sessionData);
   let plantId = JSON.parse(getPlantId);
   try {
-    return await axios.get(
+    return await api.get(
       `${CONSTANTS.API_BASE_URL}${CONSTANTS.API_URL.REGION_BY_PLANTS}`,
       {
         headers: {
@@ -993,7 +1035,7 @@ const customerList = async dataObj => {
   let jsonSessionData = JSON.parse(sessionData);
   let plantId = JSON.parse(getPlantId);
   try {
-    return await axios.post(
+    return await api.post(
       `${CONSTANTS.API_BASE_URL}${CONSTANTS.API_URL.CUSTOMER_LIST}`,
       dataObj,
       {
@@ -1021,7 +1063,7 @@ const exportData = async (dataObj, businessUnit) => {
   // console.log("Data oBject", dataObj, businessUnit);
 
   try {
-    return await axios.post(
+    return await api.post(
       `${CONSTANTS.API_BASE_URL}${CONSTANTS.API_URL.EXPORT_DATA}${businessUnit}`,
       dataObj,
       {
@@ -1047,7 +1089,7 @@ const reportSAP = async dataObj => {
   let jsonSessionData = JSON.parse(sessionData);
   let plantId = JSON.parse(getPlantId);
   try {
-    return await axios.post(
+    return await api.post(
       `${CONSTANTS.API_BASE_URL}${CONSTANTS.API_URL.SAP_REPORT}`,
       dataObj,
       {
@@ -1075,7 +1117,7 @@ const cartCount = async dataObj => {
   let jsonSessionData = JSON.parse(sessionData);
   let plantId = JSON.parse(getPlantId);
   try {
-    return await axios.get(
+    return await api.get(
       `${CONSTANTS.API_BASE_URL}${CONSTANTS.API_URL.CART_COUNT}${dataObj?.userId}`,
       {
         headers: {
@@ -1102,7 +1144,7 @@ const vocListing = async dataObj => {
     const getPlantId = await AsyncStorage.getItem('@plantId');
     let jsonSessionData = JSON.parse(sessionData);
     let plantId = JSON.parse(getPlantId);
-    return await axios.post(
+    return await api.post(
       `${CONSTANTS.API_BASE_URL}${CONSTANTS.API_URL.FEEDBACK_LIST}`,
       dataObj?.dataObj,
       {
@@ -1127,7 +1169,7 @@ const vocAdminListing = async dataObj => {
     const getPlantId = await AsyncStorage.getItem('@plantId');
     let jsonSessionData = JSON.parse(sessionData);
     let plantId = JSON.parse(getPlantId);
-    return await axios.post(
+    return await api.post(
       `${CONSTANTS.API_BASE_URL}${CONSTANTS.API_URL.ADMIN_LISTING}`,
       dataObj?.dataObj,
       {
@@ -1153,7 +1195,7 @@ const getComplaintById = async dataObj => {
   let jsonSessionData = JSON.parse(sessionData);
   let plantId = JSON.parse(getPlantId);
   try {
-    return await axios.get(
+    return await api.get(
       `${CONSTANTS.API_BASE_URL}${CONSTANTS.API_URL.GET_COMPLAINT}/${dataObj?.id}`,
       {
         headers: {
@@ -1179,7 +1221,7 @@ const getAllCCHPProductVariants = async dataObj => {
     const getPlantId = await AsyncStorage.getItem('@plantId');
     let jsonSessionData = JSON.parse(sessionData);
     let plantId = JSON.parse(getPlantId);
-    return await axios.post(
+    return await api.post(
       `${CONSTANTS.API_BASE_URL}${CONSTANTS.API_URL.GET_ALL_CCHPPRODUCTVARIANTS}`,
       dataObj,
       {
@@ -1204,7 +1246,7 @@ const getShipment = async (dataObj) => {
     const getPlantId = await AsyncStorage.getItem('@plantId');
     let jsonSessionData = JSON.parse(sessionData);
     let plantId = JSON.parse(getPlantId);
-    return await axios.get(
+    return await api.get(
       `${CONSTANTS.API_BASE_URL}${CONSTANTS.API_URL.GET_SHIPMENT}${dataObj?.businessUnit}/${dataObj?.salesOrg}`,
       {
         headers: {
@@ -1231,7 +1273,7 @@ const getUserByRoleRM = async (dataObj) => {
     let plantId = JSON.parse(getPlantId);
     // console.log("check this plantId?.plantId", plantId?.plantId, jsonSessionData?.companyId);
 
-    return await axios.get(
+    return await api.get(
       `${CONSTANTS.AUTH_BASE_URL}${CONSTANTS.API_URL.GET_USERBYROLE}${plantId?.plantId}/${jsonSessionData?.companyId}/Regional Manager`,
       {
         headers: {
@@ -1257,7 +1299,7 @@ const getUserByRoleRMSEZ = async (dataObj) => {
     let plantId = JSON.parse(getPlantId);
     // console.log("check this plantId?.plantId", plantId?.plantId, jsonSessionData?.companyId);
 
-    return await axios.get(
+    return await api.get(
       `${CONSTANTS.AUTH_BASE_URL}${CONSTANTS.API_URL.GET_USERBYROLE}${plantId?.plantId}/${jsonSessionData?.companyId}/Regional Manager - SEZ`,
       {
         headers: {
@@ -1283,7 +1325,7 @@ const getUserByRolePM = async (dataObj) => {
     let plantId = JSON.parse(getPlantId);
     // console.log("check this plantId?.plantId", plantId?.plantId, jsonSessionData?.companyId);
 
-    return await axios.get(
+    return await api.get(
       `${CONSTANTS.AUTH_BASE_URL}${CONSTANTS.API_URL.GET_USERBYROLE}${plantId?.plantId}/${jsonSessionData?.companyId}/Product Manager`,
       {
         headers: {
@@ -1310,7 +1352,7 @@ const getUserByRolePMSEZ = async (dataObj) => {
     let plantId = JSON.parse(getPlantId);
     // console.log("check this plantId?.plantId", plantId?.plantId, jsonSessionData?.companyId);
 
-    return await axios.get(
+    return await api.get(
       `${CONSTANTS.AUTH_BASE_URL}${CONSTANTS.API_URL.GET_USERBYROLE}${plantId?.plantId}/${jsonSessionData?.companyId}/Product Manager - SEZ`,
       {
         headers: {
@@ -1334,7 +1376,7 @@ const getComplaintMail = async (dispatchCompanyId) => {
     const getPlantId = await AsyncStorage.getItem('@plantId');
     let jsonSessionData = JSON.parse(sessionData);
     let plantId = JSON.parse(getPlantId);
-    return await axios.get(
+    return await api.get(
       `${CONSTANTS.API_BASE_URL}${CONSTANTS.API_URL.COMPLAINTS_MAIL}${dispatchCompanyId?.dispatchCompanyId}`,
       {
         headers: {
@@ -1358,7 +1400,7 @@ const feedbackCategory = async (dataObj) => {
     const getPlantId = await AsyncStorage.getItem('@plantId');
     let jsonSessionData = JSON.parse(sessionData);
     let plantId = JSON.parse(getPlantId);
-    return await axios.get(
+    return await api.get(
       `${CONSTANTS.API_BASE_URL}${CONSTANTS.API_URL.FEEDBACK_CATEGORY}${dataObj?.role}/${dataObj?.businessUnit}`,
       {
         headers: {
@@ -1382,7 +1424,7 @@ const feedbackSubCategory = async (dataObj) => {
     const getPlantId = await AsyncStorage.getItem('@plantId');
     let jsonSessionData = JSON.parse(sessionData);
     let plantId = JSON.parse(getPlantId);
-    return await axios.post(
+    return await api.post(
       `${CONSTANTS.API_BASE_URL}${CONSTANTS.API_URL.FEEDBACK_SUBCATEGORY}`,
       dataObj,
       {
@@ -1406,7 +1448,7 @@ const getNotifications = async (dataObj) => {
     const getPlantId = await AsyncStorage.getItem('@plantId');
     let jsonSessionData = JSON.parse(sessionData);
     let plantId = JSON.parse(getPlantId);
-    return await axios.get(
+    return await api.get(
       `${CONSTANTS.AUTH_BASE_URL}${CONSTANTS.API_URL.GETNOTIFICATION}${dataObj?.userId}`,
       {
         headers: {
@@ -1429,7 +1471,7 @@ const getUnreadCount = async (dataObj) => {
     const getPlantId = await AsyncStorage.getItem('@plantId');
     let jsonSessionData = JSON.parse(sessionData);
     let plantId = JSON.parse(getPlantId);
-    return await axios.get(
+    return await api.get(
       `${CONSTANTS.AUTH_BASE_URL}${CONSTANTS.API_URL.GETUNREADCOUNT}${dataObj?.userId}`,
       {
         headers: {
@@ -1455,7 +1497,7 @@ const markAsRead = async (dataObj) => {
     const getPlantId = await AsyncStorage.getItem('@plantId');
     let jsonSessionData = JSON.parse(sessionData);
     let plantId = JSON.parse(getPlantId);
-    return await axios.post(
+    return await api.post(
       `${CONSTANTS.AUTH_BASE_URL}${CONSTANTS.API_URL.MARKASREAD}${dataObj?.typeId}`,
       {},
       {
@@ -1480,7 +1522,7 @@ const deleteNoti = async (dataObj) => {
     const getPlantId = await AsyncStorage.getItem('@plantId');
     let jsonSessionData = JSON.parse(sessionData);
     let plantId = JSON.parse(getPlantId);
-    return await axios.post(
+    return await api.post(
       `${CONSTANTS.AUTH_BASE_URL}${CONSTANTS.API_URL.DELETENOTI}${dataObj?.typeId}`,
       {},
       {

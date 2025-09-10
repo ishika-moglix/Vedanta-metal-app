@@ -549,7 +549,7 @@ const LoginWithOtpScreen = ({ navigation, route }) => {
                     size={18}
                     color={'#0466A9'}
                     onPress={BUSelect}
-                    style={{ position: 'absolute', right: 15, top: 12 }}
+                    style={{ position: 'absolute', right: 15 }}
                   />
                 </TouchableOpacity>
               </View>
@@ -572,7 +572,7 @@ const LoginWithOtpScreen = ({ navigation, route }) => {
                     size={22}
                     color={'#0466A9'}
                     onPress={() => setIsVisible(true)}
-                    style={{ position: 'absolute', right: 15, top: 8 }}
+                    style={{ position: 'absolute', right: 15 }}
                   />
                 </TouchableOpacity>
                 <Modal
